@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Models
+namespace Model
 {
-    class Pedido
+    class CategoriaProduto
     {
         public int Id { get; set; }
-        public int NumeroMesa { get; set; }
-        public string Cpf { get; set; }
+        public string Descricao { get; set; }
     }
 }

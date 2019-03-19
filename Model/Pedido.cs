@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Models
+namespace Model
 {
-    class Funcionario
+    class Pedido
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
-        public DateTime DataNascimento { get; set; }
+        public int NumeroMesa { get; set; }
         public string Cpf { get; set; }
     }
 }
