@@ -2,7 +2,7 @@
 
 namespace Model
 {
-    class Funcionario
+    public class Funcionario
     {
         public int Id { get; set; }
         public string Nome { get; set; }
