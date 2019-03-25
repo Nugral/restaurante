@@ -56,9 +56,9 @@ namespace API.Controllers
                     funcionario.DataNascimento = funcionarioViewModel.DataNascimento;
                     funcionario.Cpf = funcionarioViewModel.Cpf;
 
-                    var mensagens = new string[0];
+                    var mensagens = new List<string>();
 
-                    if (!funcionario.IsValid(out mensagens))
+                    if (!funcionario.IsValid(mensagens))
                     {
                         return NotFound(new
                         {
@@ -110,9 +110,9 @@ namespace API.Controllers
                     funcionario.DataNascimento = funcionarioViewModel.DataNascimento;
                     funcionario.Cpf = funcionarioViewModel.Cpf;
 
-                    var mensagens = new string[0];
+                    var mensagens = new List<string>();
 
-                    if (!funcionario.IsValid(out mensagens))
+                    if (!funcionario.IsValid(mensagens))
                     {
                         return NotFound(new
                         {
