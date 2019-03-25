@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Model.Utils
 {
-    public abstract class ValidacaoModel
+    public abstract class ValidacaoModel : IDisposable
     {
         public abstract bool IsValid(out string[] mensagens);
 
@@ -29,5 +29,7 @@ namespace Model.Utils
 
             return IsValid(out mensagens);
         }
+
+        public void Dispose() { }
     }
 }

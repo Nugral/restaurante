@@ -57,7 +57,7 @@ namespace API.Utils
             }
         }
 
-        public int UltimoIdInserido() => int.Parse(ExecuteReader("SELECT LAST_INSERT_ID()").Rows[0].ToString());
+        public int UltimoIdInserido() => int.Parse(ExecuteReader("SELECT LAST_INSERT_ID() AS id").Rows[0]["id"].ToString());
 
         public MySqlTransaction BeginTransaction() => _conn.BeginTransaction();
 
