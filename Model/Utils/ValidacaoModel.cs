@@ -6,15 +6,15 @@ namespace Model.Utils
 {
     public abstract class ValidacaoModel : IDisposable
     {
-        public abstract bool IsValid(out string[] mensagens);
+        public abstract bool IsValid(IList<string> mensagens);
 
         public bool IsValid(out string mensagem)
         {
-            string[] mensagens;
+            var mensagens = new List<string>();
 
             mensagem = "";
 
-            if (IsValid(out mensagens))
+            if (IsValid(mensagens))
                 return true;
             else
             {
@@ -25,9 +25,9 @@ namespace Model.Utils
 
         public bool IsValid()
         {
-            string[] mensagens;
+            var mensagens = new List<string>();
 
-            return IsValid(out mensagens);
+            return IsValid(mensagens);
         }
 
         public void Dispose() { }

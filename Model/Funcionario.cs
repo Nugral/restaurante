@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Model.Utils;
 
@@ -11,19 +12,17 @@ namespace Model
         public DateTime DataNascimento { get; set; }
         public string Cpf { get; set; }
 
-        public override bool IsValid(out string[] mensagens)
+        public override bool IsValid(IList<string> mensagens)
         {
-            mensagens = new string[0];
-
             if ((Nome == null) || (Nome.Trim().Length <= 3))
-                mensagens.Append("O nome é obrigatório e deve ter ao menos 3 caracteres!");
+                mensagens.Add("O nome é obrigatório e deve ter ao menos 3 caracteres!");
 
             if ((Cpf != null) && (Cpf.Trim().Length == 11))
             {
                 if (!Validacoes.ValidarCpf(Cpf))
-                    mensagens.Append("O cpf não é válido!");
+                    mensagens.Add("O cpf não é válido!");
             } else
-                mensagens.Append("O Cpf é obrigatório e deve ter 11 dígitos!");
+                mensagens.Add("O Cpf é obrigatório e deve ter 11 dígitos!");
 
             return mensagens.Count() == 0;
         }
