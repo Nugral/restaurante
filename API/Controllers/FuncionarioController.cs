@@ -5,16 +5,19 @@ using System.Threading.Tasks;
 using API.Models;
 using API.Models.ViewModel;
 using API.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
+    [Produces("application/json")]
     [ApiController]
+    [Authorize]
     public class FuncionarioController : ControllerBase
     {
-        public ConexaoGeral ConexaoGeral { get; set; }
+        private ConexaoGeral ConexaoGeral { get; set; }
 
         public FuncionarioController(ConexaoGeral conexaoGeral) => ConexaoGeral = conexaoGeral;
 
