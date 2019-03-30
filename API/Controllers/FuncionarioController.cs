@@ -49,7 +49,7 @@ namespace API.Controllers
         }
 
         [HttpPost("cadastrar")]
-        public IActionResult Cadastrar(CadastrarFuncionarioViewModel funcionarioViewModel)
+        public IActionResult Cadastrar(DadosFuncionarioViewModel funcionarioViewModel)
         {
             try {
                 using (var funcionario = new Funcionario())
@@ -57,6 +57,7 @@ namespace API.Controllers
 
                     funcionario.Nome = funcionarioViewModel.Nome;
                     funcionario.DataNascimento = funcionarioViewModel.DataNascimento;
+                    funcionario.Nivel = funcionarioViewModel.Nivel;
                     funcionario.Cpf = funcionarioViewModel.Cpf;
 
                     var mensagens = new List<string>();
@@ -100,7 +101,7 @@ namespace API.Controllers
         }
 
         [HttpPost("alterar/{id:int}")]
-        public IActionResult Alterar(int id, CadastrarFuncionarioViewModel funcionarioViewModel)
+        public IActionResult Alterar(int id, DadosFuncionarioViewModel funcionarioViewModel)
         {
             try
             {
@@ -111,6 +112,7 @@ namespace API.Controllers
 
                     funcionario.Nome = funcionarioViewModel.Nome;
                     funcionario.DataNascimento = funcionarioViewModel.DataNascimento;
+                    funcionario.Nivel = funcionarioViewModel.Nivel;
                     funcionario.Cpf = funcionarioViewModel.Cpf;
 
                     var mensagens = new List<string>();
