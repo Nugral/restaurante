@@ -11,6 +11,7 @@ namespace Model
         public string Nome { get; set; }
         public DateTime DataNascimento { get; set; }
         public string Cpf { get; set; }
+        public string Nivel { get; set; }
 
         public override bool IsValid(IList<string> mensagens)
         {
@@ -23,6 +24,9 @@ namespace Model
                     mensagens.Add("O cpf não é válido!");
             } else
                 mensagens.Add("O Cpf é obrigatório e deve ter 11 dígitos!");
+
+            if ((Nivel == null) || (Nivel.Trim() == string.Empty))
+                mensagens.Add("O nível de acesso é obrigatório!");
 
             return mensagens.Count() == 0;
         }

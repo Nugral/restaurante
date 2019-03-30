@@ -22,10 +22,10 @@ namespace API.DAO
             if (!model.IsValid())
                 throw new ValidacaoModelException("O modelo não está em um estado válido!");
 
-            string sql = " INSERT INTO funcionario                           " +
-                         "   (nome, dataNascimento, cpf, dataCadastro)       " +
-                         " VALUES                                            " +
-                         "   (@nome, @dataNascimento, @cpf, NOW())  ";
+            string sql = " INSERT INTO funcionario                            " +
+                         "   (nome, dataNascimento, cpf, nivel, dataCadastro) " +
+                         " VALUES                                             " +
+                         "   (@nome, @dataNascimento, @cpf, @nivel, NOW())    ";
 
             var parameters = GetParameters(model);
 
@@ -93,6 +93,7 @@ namespace API.DAO
             var parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("@nome", MySqlDbType.String) { Value = model.Nome });
             parameters.Add(new MySqlParameter("@dataNascimento", MySqlDbType.Date) { Value = model.DataNascimento });
+            parameters.Add(new MySqlParameter("@nivel", MySqlDbType.String) { Value = model.Nivel });
             parameters.Add(new MySqlParameter("@cpf", MySqlDbType.String) { Value = model.Cpf });
 
             return parameters;
@@ -103,6 +104,7 @@ namespace API.DAO
             model.Id = int.Parse(dr["id"].ToString());
             model.Nome = dr["nome"].ToString();
             model.DataNascimento = DateTime.Parse(dr["dataNascimento"].ToString());
+            model.Nivel = dr["nivel"].ToString();
             model.Cpf = dr["cpf"].ToString();
         }
 
