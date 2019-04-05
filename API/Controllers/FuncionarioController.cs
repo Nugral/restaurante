@@ -49,7 +49,7 @@ namespace API.Controllers
         }
 
         [HttpPost("cadastrar")]
-        public IActionResult Cadastrar(DadosFuncionarioViewModel funcionarioViewModel)
+        public IActionResult Cadastrar(CadastroFuncionarioViewModel funcionarioViewModel)
         {
             try {
                 using (var funcionario = new Funcionario())
@@ -63,18 +63,13 @@ namespace API.Controllers
                     var mensagens = new List<string>();
 
                     if (!funcionario.IsValid(mensagens))
-                    {
-                        return NotFound(new
-                        {
-                            erros = mensagens
-                        });
-                    }
+                        return NotFound(new {erros = mensagens});
 
                     using (MySqlTransaction transaction = ConexaoGeral.BeginTransaction())
                     {
                         try
                         {
-                            funcionario.Salvar(ConexaoGeral, transaction);
+                            funcionario.Salvar(funcionarioViewModel.Senha, ConexaoGeral, transaction);
                             transaction.Commit();
                             return new OkResult();
                         }
