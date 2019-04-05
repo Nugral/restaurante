@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using API.DAO.API;
+using API.Models;
 using API.Models.API;
 using API.Models.ViewModel;
 using API.Utils;
@@ -44,6 +45,18 @@ namespace API.Controllers
 
             var subject = new ClaimsIdentity();
             subject.AddClaim(new Claim(ClaimTypes.Name, user.Usuario));
+
+            if (!string.IsNullOrEmpty(user.Cpf))
+            {
+                using (var funcionario = new Funcionario())
+                {
+                    if (!funcionario.Login(user.Cpf, user.SenhaFuncionario, ConexaoGeral, null))
+                        return BadRequest($"Usuário e/ou senha do funcionário inválidos!");
+
+                    subject.AddClaim(new Claim("IdFuncionario", funcionario.Id.ToString()));
+                    subject.AddClaim(new Claim(ClaimTypes.Role, funcionario.Nivel));
+                }
+            }
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
