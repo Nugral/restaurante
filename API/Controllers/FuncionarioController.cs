@@ -95,6 +95,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Policy = "AdministradorOuProprioFuncionario")]
         [HttpPost("alterar/{id:int}")]
         public IActionResult Alterar(int id, DadosFuncionarioViewModel funcionarioViewModel)
         {
