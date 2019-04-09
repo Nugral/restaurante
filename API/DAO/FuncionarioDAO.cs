@@ -14,7 +14,9 @@ namespace API.DAO
 
         public FuncionarioDAO(ConexaoGeral conn) => _conn = conn;
 
-        public int Insert(Funcionario model, MySqlTransaction transaction)
+        public int Insert(Funcionario model, MySqlTransaction transaction) => throw new NotImplementedException();
+
+        public int Insert(Funcionario model, string senha, MySqlTransaction transaction)
         {
             if (model.Id != 0)
                 throw new DataBaseException("Não é possível inserir um registro que já possui identificador!");
@@ -22,12 +24,16 @@ namespace API.DAO
             if (!model.IsValid())
                 throw new ValidacaoModelException("O modelo não está em um estado válido!");
 
-            string sql = " INSERT INTO funcionario                            " +
-                         "   (nome, dataNascimento, cpf, nivel, dataCadastro) " +
-                         " VALUES                                             " +
-                         "   (@nome, @dataNascimento, @cpf, @nivel, NOW())    ";
+            if (string.IsNullOrEmpty(senha))
+                throw new ValidacaoModelException("A senha é obrigatória para cadastrar um funcionário!");
+
+            string sql = " INSERT INTO funcionario                                      " +
+                         "   (nome, dataNascimento, cpf, nivel, senha, dataCadastro)    " +
+                         " VALUES                                                       " +
+                         "   (@nome, @dataNascimento, @cpf, @nivel, MD5(@senha), NOW()) ";
 
             var parameters = GetParameters(model);
+            parameters.Add(new MySqlParameter("@senha", MySqlDbType.String) { Value = senha });
 
             int linhasAfetadas = _conn.Execute(sql, parameters, transaction);
 
@@ -82,6 +88,29 @@ namespace API.DAO
                 return false;
             else if (dt.Rows.Count > 1)
                 throw new Exception($"Existem {dt.Rows.Count} funcionários com o id `{id}`!");
+
+            PreencherModel(model, dt.Rows[0]);
+
+            return true;
+        }
+
+        public bool Login(Funcionario model, string cpf, string senha, MySqlTransaction transaction)
+        {
+            string sql = " SELECT *                      " +
+                         " FROM funcionario a            " +
+                         " WHERE a.`cpf` = @cpf          " +
+                         "   AND a.`senha` = MD5(@senha) ";
+
+            var parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("@cpf", MySqlDbType.String) { Value = cpf });
+            parameters.Add(new MySqlParameter("@senha", MySqlDbType.String) { Value = senha });
+
+            DataTable dt = _conn.ExecuteReader(sql, parameters, transaction);
+
+            if (dt.Rows.Count == 0)
+                return false;
+            else if (dt.Rows.Count > 1)
+                throw new Exception($"Foram encontrados {dt.Rows.Count} funcionários com essas informações!");
 
             PreencherModel(model, dt.Rows[0]);
 
